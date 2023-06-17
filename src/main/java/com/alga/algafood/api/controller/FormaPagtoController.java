@@ -17,50 +17,49 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alga.algafood.domain.exception.EntidadeEmUsoException;
 import com.alga.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.alga.algafood.domain.model.Cidade;
-import com.alga.algafood.domain.model.Restaurante;
-import com.alga.algafood.domain.service.CadastroCidadeService;
+import com.alga.algafood.domain.model.FormaPagamento;
+import com.alga.algafood.domain.service.CadastroFormaPagtoService;
 
 @RestController
-@RequestMapping(value = "/cidades")
-public class CidadeController {
-	
+@RequestMapping("/formaPagtos")
+public class FormaPagtoController {
+
 	@Autowired
-	CadastroCidadeService cadastroCidadeService;
+	CadastroFormaPagtoService cadastroFormaPagtoService;
 	
 	@GetMapping(produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Cidade>> listar() {
-		List<Cidade> cidades = cadastroCidadeService.listar();
+	public ResponseEntity<List<FormaPagamento>> listar() {
+		List<FormaPagamento> formaPagamento = cadastroFormaPagtoService.listar();
 		
-		return ResponseEntity.status(HttpStatus.OK).body(cidades);
+		return ResponseEntity.status(HttpStatus.OK).body(formaPagamento);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Cidade> adicionar(@RequestBody Cidade cidade){
+	public ResponseEntity<FormaPagamento> adicionar(@RequestBody FormaPagamento formaPagamento){
 		try {	
-			cidade = cadastroCidadeService.adicionar(cidade);
+			formaPagamento = cadastroFormaPagtoService.adicionar(formaPagamento);
 			
 		} catch (Exception e) {
-			throw new RuntimeException("Erro para atualizar a cidade " + cidade.getNome() + e);
+			throw new RuntimeException("Erro para atualizar a formaPagamento " + formaPagamento.getDescricao() + e);
 		}
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
+		return ResponseEntity.status(HttpStatus.CREATED).body(formaPagamento);
 		
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@PutMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> salvar(@PathVariable Long cidadeId, @RequestBody Cidade cidade){
-		Cidade cidadeAtualizada = cadastroCidadeService.salvar(cidadeId, cidade);	
+	@PutMapping("/{formaPagamentoId}")
+	public ResponseEntity<FormaPagamento> salvar(@PathVariable Long formaPagamentoId, @RequestBody FormaPagamento formaPagamento){
+		FormaPagamento formaPagamentoAtualizado = cadastroFormaPagtoService.salvar(formaPagamentoId, formaPagamento);	
 			
-		return ResponseEntity.status(HttpStatus.OK).body(cidadeAtualizada);
+		return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoAtualizado);
 	}
 	
-	@DeleteMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> remover(@PathVariable Long cidadeId) {
+	@DeleteMapping("/{formaPagamentoId}")
+	public ResponseEntity<FormaPagamento> remover(@PathVariable Long formaPagamentoId) {
 		try {
-			cadastroCidadeService.excluir(cidadeId);
+			cadastroFormaPagtoService.excluir(formaPagamentoId);
 			return ResponseEntity.noContent().build();
 			
 		}catch(EntidadeNaoEncontradaException e) {
@@ -70,5 +69,4 @@ public class CidadeController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
-
 }

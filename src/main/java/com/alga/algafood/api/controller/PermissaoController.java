@@ -17,50 +17,49 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alga.algafood.domain.exception.EntidadeEmUsoException;
 import com.alga.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.alga.algafood.domain.model.Cidade;
-import com.alga.algafood.domain.model.Restaurante;
-import com.alga.algafood.domain.service.CadastroCidadeService;
+import com.alga.algafood.domain.model.Permissao;
+import com.alga.algafood.domain.service.CadastroPermissaoService;
 
 @RestController
-@RequestMapping(value = "/cidades")
-public class CidadeController {
-	
+@RequestMapping("/permissoes")
+public class PermissaoController {
+
 	@Autowired
-	CadastroCidadeService cadastroCidadeService;
+	CadastroPermissaoService cadastroPermissaoService;
 	
 	@GetMapping(produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Cidade>> listar() {
-		List<Cidade> cidades = cadastroCidadeService.listar();
+	public ResponseEntity<List<Permissao>> listar() {
+		List<Permissao> permissao = cadastroPermissaoService.listar();
 		
-		return ResponseEntity.status(HttpStatus.OK).body(cidades);
+		return ResponseEntity.status(HttpStatus.OK).body(permissao);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Cidade> adicionar(@RequestBody Cidade cidade){
+	public ResponseEntity<Permissao> adicionar(@RequestBody Permissao permissao){
 		try {	
-			cidade = cadastroCidadeService.adicionar(cidade);
+			permissao = cadastroPermissaoService.adicionar(permissao);
 			
 		} catch (Exception e) {
-			throw new RuntimeException("Erro para atualizar a cidade " + cidade.getNome() + e);
+			throw new RuntimeException("Erro para atualizar a permissao " + permissao.getNome() + e);
 		}
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
+		return ResponseEntity.status(HttpStatus.CREATED).body(permissao);
 		
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@PutMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> salvar(@PathVariable Long cidadeId, @RequestBody Cidade cidade){
-		Cidade cidadeAtualizada = cadastroCidadeService.salvar(cidadeId, cidade);	
+	@PutMapping("/{permissaoId}")
+	public ResponseEntity<Permissao> salvar(@PathVariable Long permissaoId, @RequestBody Permissao permissao){
+		Permissao permissaoAtualizado = cadastroPermissaoService.salvar(permissaoId, permissao);	
 			
-		return ResponseEntity.status(HttpStatus.OK).body(cidadeAtualizada);
+		return ResponseEntity.status(HttpStatus.OK).body(permissaoAtualizado);
 	}
 	
-	@DeleteMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> remover(@PathVariable Long cidadeId) {
+	@DeleteMapping("/{permissaoId}")
+	public ResponseEntity<Permissao> remover(@PathVariable Long permissaoId) {
 		try {
-			cadastroCidadeService.excluir(cidadeId);
+			cadastroPermissaoService.excluir(permissaoId);
 			return ResponseEntity.noContent().build();
 			
 		}catch(EntidadeNaoEncontradaException e) {
@@ -70,5 +69,4 @@ public class CidadeController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
-
 }

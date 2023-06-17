@@ -98,7 +98,7 @@ public class RestauranteController {
 	public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
 			@RequestBody Map<String, Object> campos) {
 		
-		Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+		Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
 		
 		if(restauranteAtual == null) {
 			return ResponseEntity.notFound().build();
