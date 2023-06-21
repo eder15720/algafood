@@ -1,6 +1,7 @@
 package com.alga.algafood.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,39 +21,39 @@ public class CadastroEstadoService {
 	EstadoRepository estadoRepository;
 
 	public List<Estado> listar(){
-		return estadoRepository.listar();
+		return estadoRepository.findAll();
 	}
 	
 	public Estado buscar(Long estadoId){
-		return estadoRepository.buscar(estadoId);
+		return estadoRepository.findById(estadoId).orElse(null);
 	}
 	
 	public Estado salvar(Long estadoId, Estado estado) {
-		Estado estadoColeta = estadoRepository.buscar(estadoId);
+		Optional<Estado> estadoColeta = estadoRepository.findById(estadoId);
 		
-		if(estadoColeta == null) {
+		if(estadoColeta.isEmpty()) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Nao existe um cadastro de Estado com o código %d", estadoId));
 		}
 		
 		// para assumir todas as propriedades
-		BeanUtils.copyProperties(estado, estadoColeta, "id");
+		BeanUtils.copyProperties(estado, estadoColeta.get(), "id");
 		
-		return estadoRepository.salvar(estadoColeta);
+		return estadoRepository.save(estadoColeta.get());
 	}
 	
 	
 	public Estado adicionar(Estado estado) {
 		
-		return estadoRepository.salvar(estado);
+		return estadoRepository.save(estado);
 	}
 	
 	public void excluir(Long estadoId) {
 
-		Estado estadoAtual = estadoRepository.buscar(estadoId);
+		Optional<Estado> estadoColeta = estadoRepository.findById(estadoId);
 
 		try {
-			estadoRepository.remover(estadoAtual);
+			estadoRepository.deleteById(estadoColeta.get().getId());
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
