@@ -28,6 +28,8 @@ import com.alga.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.alga.algafood.domain.model.Restaurante;
 import com.alga.algafood.domain.repository.RestauranteRepository;
 import com.alga.algafood.domain.service.CadastroRestauranteService;
+import com.alga.algafood.infraestructure.repository.spec.RestauranteComFreteGratisSpec;
+import com.alga.algafood.infraestructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -73,6 +75,16 @@ public class RestauranteController {
 	@GetMapping("/restaurantes/primeiroPorNome")
 	public Optional<Restaurante> restaurantePrimeiroPorNome(String nome) {
 		return restauranteRepository.findFirstByNomeContaining(nome);
+	}
+	
+	
+	@GetMapping("/restaurantes/comFreteGratis")
+	public List<Restaurante> restaurantescomFreteGratis(String nome) {
+		
+		var comFreteGratis = new RestauranteComFreteGratisSpec();
+		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+		
+		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
