@@ -28,8 +28,7 @@ import com.alga.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.alga.algafood.domain.model.Restaurante;
 import com.alga.algafood.domain.repository.RestauranteRepository;
 import com.alga.algafood.domain.service.CadastroRestauranteService;
-import com.alga.algafood.infraestructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.alga.algafood.infraestructure.repository.spec.RestauranteComNomeSemelhanteSpec;
+import com.alga.algafood.infraestructure.repository.spec.RestaurantesSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -38,7 +37,7 @@ public class RestauranteController {
 
 	@Autowired
 	CadastroRestauranteService cadastroRestauranteService;
-	
+
 	@Autowired
 	RestauranteRepository restauranteRepository;
 
@@ -61,30 +60,28 @@ public class RestauranteController {
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
-	
+
 	@GetMapping("/restaurantes/por-taxa-frete")
-	public List<Restaurante> restaurantesPorTaxaFrete(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+	public List<Restaurante> restaurantesPorTaxaFrete(String nome, BigDecimal taxaFreteInicial,
+			BigDecimal taxaFreteFinal) {
 		return restauranteRepository.consultar(nome, taxaFreteInicial, taxaFreteFinal);
 	}
-	
+
 	@GetMapping("/restaurantes/porNomeEid")
-	public List<Restaurante> restaurantesPorNomeEid( String nome, Long cozinhaId) {
+	public List<Restaurante> restaurantesPorNomeEid(String nome, Long cozinhaId) {
 		return restauranteRepository.consultarPorNome(nome, cozinhaId);
 	}
-	
+
 	@GetMapping("/restaurantes/primeiroPorNome")
 	public Optional<Restaurante> restaurantePrimeiroPorNome(String nome) {
 		return restauranteRepository.findFirstByNomeContaining(nome);
 	}
-	
-	
+
 	@GetMapping("/restaurantes/comFreteGratis")
 	public List<Restaurante> restaurantescomFreteGratis(String nome) {
-		
-		var comFreteGratis = new RestauranteComFreteGratisSpec();
-		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-		
-		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+
+	return restauranteRepository
+		.findAll(RestaurantesSpec.comFreteGratis().and(RestaurantesSpec.comNomeSemelhante(nome)));
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -126,10 +123,10 @@ public class RestauranteController {
 	@PatchMapping("/{restauranteId}")
 	public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
 			@RequestBody Map<String, Object> campos) {
-		
+
 		Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
-		
-		if(restauranteAtual == null) {
+
+		if (restauranteAtual == null) {
 			return ResponseEntity.notFound().build();
 		}
 
@@ -142,17 +139,17 @@ public class RestauranteController {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		Restaurante restauranteOrigem = objectMapper.convertValue(objectMapper, Restaurante.class);
-		
+
 		camposOrigem.forEach((nomePropriedade, valorPropriedade) -> {
 			Field field = ReflectionUtils.findRequiredField(Restaurante.class, nomePropriedade);
 			field.setAccessible(true);
-			
+
 			Object novoValor = ReflectionUtils.findField(getClass(), (FieldFilter) restauranteOrigem);
-			
+
 			System.out.println(nomePropriedade + " = " + valorPropriedade);
-			
+
 			ReflectionUtils.setField(field, restauranteDestino, novoValor);
-			
+
 		});
 	}
 }
