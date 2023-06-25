@@ -8,5 +8,7 @@ import com.alga.algafood.domain.model.Restaurante;
 public interface RestauranteRepositoryQueries {
 
 	List<Restaurante> consultar(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
+	
+	List<Restaurante> consultarComFreteGratis(String nome);
 
 }

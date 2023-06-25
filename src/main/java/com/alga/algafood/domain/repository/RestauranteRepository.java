@@ -13,7 +13,7 @@ import com.alga.algafood.domain.RestauranteRepositoryQueries;
 import com.alga.algafood.domain.model.Restaurante;
 
 @Repository
-public interface RestauranteRepository extends JpaRepository<Restaurante, Long>, RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante> {
+public interface RestauranteRepository extends CustomJpaRepository<Restaurante, Long>, RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante> {
 	List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
 	List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinha);
@@ -30,5 +30,6 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long>,
 	List<Restaurante> consultarPorNome(String nome, @Param("id") Long cozinha);
 
 	List<Restaurante> consultar(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
+
 
 }

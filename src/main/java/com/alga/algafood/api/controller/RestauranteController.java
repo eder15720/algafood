@@ -80,8 +80,12 @@ public class RestauranteController {
 	@GetMapping("/restaurantes/comFreteGratis")
 	public List<Restaurante> restaurantescomFreteGratis(String nome) {
 
-	return restauranteRepository
-		.findAll(RestaurantesSpec.comFreteGratis().and(RestaurantesSpec.comNomeSemelhante(nome)));
+		return restauranteRepository.consultarComFreteGratis(nome);
+	}
+
+	@GetMapping("/restaurantes/primeiroPorNome")
+	public Optional<Restaurante> restaurantePrimeiro(String nome) {
+		return restauranteRepository.buscarPrimeiro();
 	}
 
 	@ResponseStatus(HttpStatus.OK)
