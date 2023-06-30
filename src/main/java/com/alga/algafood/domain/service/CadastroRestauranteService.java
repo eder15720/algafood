@@ -41,7 +41,7 @@ public class CadastroRestauranteService {
 		}
 		
 		// para assumir todas as propriedades
-		BeanUtils.copyProperties(restaurante, restauranteColeta.get(), "id");
+		BeanUtils.copyProperties(restaurante, restauranteColeta.get(), "id", "formasPagamento", "endereco", "dataCadastro");
 		
 		return restauranteRepository.save(restauranteColeta.get());
 	}

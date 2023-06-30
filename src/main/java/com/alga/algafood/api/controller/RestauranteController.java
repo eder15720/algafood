@@ -83,11 +83,6 @@ public class RestauranteController {
 		return restauranteRepository.consultarComFreteGratis(nome);
 	}
 
-	@GetMapping("/restaurantes/primeiroPorNome")
-	public Optional<Restaurante> restaurantePrimeiro(String nome) {
-		return restauranteRepository.buscarPrimeiro();
-	}
-
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/{restauranteId}")
 	public ResponseEntity<Restaurante> salvar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
