@@ -2,6 +2,7 @@ package com.alga.algafood.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -23,7 +24,7 @@ public class Edereco {
 	@Column(name = "endereco_completo")
 	private String bairro;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_cidade_id")
 	private Cidade cidade;
 
