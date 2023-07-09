@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tab_cozinhas")
+@Table(name = "tab_cozinha")
 public class Cozinha {
 
 	@EqualsAndHashCode.Include
@@ -32,6 +32,9 @@ public class Cozinha {
 	//@JsonProperty("cozinb")
 	@Column(name = "nom_cozinha", nullable = false)
 	private String nome;
+	
+	@Column(name = "observacao")
+	private String descricao;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cozinha")

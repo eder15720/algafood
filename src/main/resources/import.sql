@@ -1,5 +1,5 @@
-insert into tab_cozinhas (nom_cozinha) values ('Iailandesa');
-insert into tab_cozinhas (nom_cozinha) values ('Indiana');
+insert into tab_cozinha (nom_cozinha) values ('Iailandesa');
+insert into tab_cozinha (nom_cozinha) values ('Indiana');
 
 insert into tab_estado(nome) values('São Paulo');
 
