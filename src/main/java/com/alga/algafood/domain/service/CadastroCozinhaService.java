@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.alga.algafood.domain.exception.EntidadeEmUsoException;
 import com.alga.algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -24,14 +26,16 @@ public class CadastroCozinhaService {
 	public void excluir(Long cozinhaId) {
 
 		Cozinha cozinhaAtual = cozinhaRepository.findById(cozinhaId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(HttpStatus.BAD_REQUEST,
 						String.format("Nao existe um cadastro de cozinha com o código %d", cozinhaId)));
-
 		try {
-			cozinhaRepository.deleteById(cozinhaId);
+			cozinhaRepository.deleteById(cozinhaAtual.getId());
+
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 
 		} catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(
+			throw new EntidadeEmUsoException(HttpStatus.CONFLICT,
 					String.format("Cozinha de código %d não pode ser removida, está em uso", cozinhaId));
 		}
 

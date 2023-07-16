@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tab_permissao")
+@Table(name = "permissao")
 public class Permissao {
 	
 	@EqualsAndHashCode.Include

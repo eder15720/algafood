@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tab_cozinha")
+@Table(name = "cozinha")
 public class Cozinha {
 
 	@EqualsAndHashCode.Include
@@ -30,7 +30,7 @@ public class Cozinha {
 	
 	//@JsonIgnore A PRECEDENCIA DAS DENOTAÇÕES É IMPORTANTE E TEM EFEITO
 	//@JsonProperty("cozinb")
-	@Column(name = "nom_cozinha", nullable = false)
+	@Column(name = "nome", nullable = false)
 	private String nome;
 	
 	@Column(name = "observacao")

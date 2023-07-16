@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "tab_cidade")
+@Table(name = "cidade")
 public class Cidade {
 	
 	@EqualsAndHashCode.Include

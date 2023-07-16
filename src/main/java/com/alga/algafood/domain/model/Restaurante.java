@@ -31,7 +31,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tab_restaurante")
+@Table(name = "restaurante")
 public class Restaurante {
 
 	@EqualsAndHashCode.Include
@@ -52,7 +52,7 @@ public class Restaurante {
 	
 	@JsonIgnore
 	@Embedded
-	private Edereco endereco;
+	private Endereco endereco;
 	
 	@JsonIgnore
 	@CreationTimestamp
