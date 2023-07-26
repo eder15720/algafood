@@ -26,47 +26,46 @@ public class EstadoController {
 
 	@Autowired
 	CadastroEstadoService cadastroEstadoService;
-	
+
 	@GetMapping(produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Estado>> listar() {
 		List<Estado> estados = cadastroEstadoService.listar();
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body(estados);
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Estado> adicionar(@RequestBody Estado estado){
-		try {	
+	public ResponseEntity<Estado> adicionar(@RequestBody Estado estado) {
+		try {
 			estado = cadastroEstadoService.adicionar(estado);
-			
+
 		} catch (Exception e) {
 			throw new RuntimeException("Erro para atualizar a estado " + estado.getNome() + e);
 		}
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(estado);
-		
+
 	}
-	
+
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/{estadoId}")
+	public ResponseEntity<Estado> buscar(@PathVariable Long estadoId, @RequestBody Estado estado) {
+		Estado estadoColetado = cadastroEstadoService.buscar(estadoId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(estadoColetado);
+	}
+
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/{estadoId}")
-	public ResponseEntity<Estado> salvar(@PathVariable Long estadoId, @RequestBody Estado estado){
-		Estado estadoAtualizado = cadastroEstadoService.salvar(estadoId, estado);	
-			
+	public ResponseEntity<Estado> salvar(@PathVariable Long estadoId, @RequestBody Estado estado) {
+		Estado estadoAtualizado = cadastroEstadoService.salvar(estadoId, estado);
+
 		return ResponseEntity.status(HttpStatus.OK).body(estadoAtualizado);
 	}
-	
+
 	@DeleteMapping("/{estadoId}")
-	public ResponseEntity<Estado> remover(@PathVariable Long estadoId) {
-		try {
-			cadastroEstadoService.excluir(estadoId);
-			return ResponseEntity.noContent().build();
-			
-		}catch(EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-			
-		}catch(EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}
+	public void remover(@PathVariable Long estadoId) {
+		cadastroEstadoService.excluir(estadoId);
 	}
 }

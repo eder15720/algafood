@@ -28,7 +28,6 @@ import com.alga.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.alga.algafood.domain.model.Restaurante;
 import com.alga.algafood.domain.repository.RestauranteRepository;
 import com.alga.algafood.domain.service.CadastroRestauranteService;
-import com.alga.algafood.infraestructure.repository.spec.RestaurantesSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -51,14 +50,7 @@ public class RestauranteController {
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestauranteService.buscar(restauranteId);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.LOCATION, "http://localhost:8080/restaurantes");
-
-		if (restaurante != null) {
-			return ResponseEntity.ok(restaurante);
-		}
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return ResponseEntity.status(HttpStatus.OK).body(restaurante);
 	}
 
 	@GetMapping("/restaurantes/por-taxa-frete")
@@ -85,10 +77,15 @@ public class RestauranteController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping("/{restauranteId}")
-	public ResponseEntity<Restaurante> salvar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
-		Restaurante restauranteAtualizado = cadastroRestauranteService.salvar(restauranteId, restaurante);
+	public ResponseEntity<?> salvar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+		try {
+			Restaurante restauranteAtualizado = cadastroRestauranteService.salvar(restauranteId, restaurante);
 
-		return ResponseEntity.status(HttpStatus.OK).body(restauranteAtualizado);
+			return ResponseEntity.status(HttpStatus.OK).body(restauranteAtualizado);
+
+		} catch (EntidadeNaoEncontradaException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 	@PostMapping
@@ -124,10 +121,6 @@ public class RestauranteController {
 			@RequestBody Map<String, Object> campos) {
 
 		Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
-
-		if (restauranteAtual == null) {
-			return ResponseEntity.notFound().build();
-		}
 
 		merge(campos, restauranteAtual);
 
