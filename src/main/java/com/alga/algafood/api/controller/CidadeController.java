@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alga.algafood.api.exceptionhandler.Problema;
 import com.alga.algafood.domain.exception.EntidadeEmUsoException;
 import com.alga.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.alga.algafood.domain.exception.NegocioException;
