@@ -10,7 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
+import com.alga.algafood.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -30,6 +32,7 @@ public class Cozinha {
 	
 	//@JsonIgnore A PRECEDENCIA DAS DENOTAÇÕES É IMPORTANTE E TEM EFEITO
 	//@JsonProperty("cozinb")
+	@NotBlank(groups = Groups.CadastroRestaurante.class)
 	@Column(name = "nome", nullable = false)
 	private String nome;
 	

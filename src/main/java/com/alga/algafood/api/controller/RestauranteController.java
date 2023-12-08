@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.flywaydb.core.internal.util.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +96,7 @@ public class RestauranteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Restaurante> adicionar(@RequestBody Restaurante restaurante) {
+	public ResponseEntity<Restaurante> adicionar(@RequestBody @Valid Restaurante restaurante) {
 		try {
 			restaurante = cadastroRestauranteService.adicionar(restaurante);
 

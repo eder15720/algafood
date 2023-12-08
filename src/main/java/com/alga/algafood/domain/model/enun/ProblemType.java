@@ -11,7 +11,8 @@ public enum ProblemType {
 	REQUISICAO_NAO_SUPORTADA("/media-type-erro", "Tipo da requisicao nao suportada para envio"),
 	ERRO_NEGOCIO("/requisicao-com-erro", "Erro nao previsto durante a execucao da requisicao"),
 	ERRO_PROPRIEDADE_IGNORADA("requisicao-incompreensivel", "propriedade/campo de preenchimento ignorada durante o envio"),
-	ERRO_DE_SISTEMA("erro-sistemico", "erro nao previsto ocorrido");
+	ERRO_DE_SISTEMA("erro-sistemico", "erro nao previsto ocorrido"),
+	DADOS_INVALIDOS("dados-invalidos", "dados inválidos na requisicao");
 	
 	
 	private String title;
